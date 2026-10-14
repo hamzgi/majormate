@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MajorMate 데모
 
-## Getting Started
+컴퓨터공학과 학생을 위한 전공 커뮤니티 및 조건 기반 스터디 매칭 서비스의 프런트엔드 데모입니다.
 
-First, run the development server:
+## 이번 데모에서 구현한 범위
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Next.js App Router 기반 홈, 커뮤니티, 스터디, MY 페이지
+- 커뮤니티 글 목록/검색/카테고리 필터, 글 작성, 상세 보기, 댓글 작성
+- 과목·요일·진행 방식·모집 상태 기반 스터디 필터
+- 스터디 모집글 작성, 상세 보기, 참여 신청
+- MY 페이지에서 내 신청 내역과 그룹장의 신청 승인·거절 흐름
+- React의 기본 텍스트 렌더링을 사용해 사용자 입력을 HTML로 삽입하지 않는 안전한 데모 UI
+
+## 이번 데모에서 제외한 범위
+
+- 회원가입·로그인 및 실제 세션 처리
+- MongoDB/Mongoose와 서버 액션/Route Handler
+- 실제 다중 사용자 데이터 동기화, 권한 검증, 자동 모집 마감
+- Rate limiting, 보안 헤더, 취약점 재현용 별도 실습 환경
+
+## 실행
+
+```powershell
+cd "C:\Users\bagh0\Desktop\웹보안팀플\majormate"
+npm.cmd run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+브라우저에서 `http://localhost:3000`을 열면 됩니다.
