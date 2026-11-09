@@ -26,3 +26,15 @@ npm.cmd run dev
 ```
 
 브라우저에서 `http://localhost:3000`을 열면 됩니다.
+
+## 1단계: 계정 기능 설정
+
+이번 단계에서는 MongoDB Atlas와 Auth.js 기반의 이메일 회원가입, 로그인, 로그아웃, 보호된 MY 페이지를 구현했습니다. 비밀번호는 bcrypt 해시로만 저장하며, 세션은 Auth.js JWT로 관리합니다.
+
+1. `.env.example`을 참고해 프로젝트 루트에 `.env.local` 파일을 만들고 아래 값을 입력합니다.
+   - `MONGODB_URI`: Atlas에서 만든 데이터베이스 연결 문자열
+   - `AUTH_SECRET`: `npx auth secret` 또는 안전한 32바이트 이상의 난수로 만든 비밀값
+2. MongoDB Atlas Network Access에서 개발 환경 또는 Vercel의 서버리스 함수가 연결할 수 있도록 설정합니다.
+3. Vercel 프로젝트의 **Settings → Environment Variables**에도 같은 두 변수를 등록한 뒤 재배포합니다.
+
+`.env.local`과 연결 문자열, 비밀값은 Git에 올리면 안 됩니다. 환경 변수가 아직 등록되지 않은 배포에서는 로그인·회원가입 대신 준비 안내 화면이 표시되므로, 공개 데모 홈 화면은 계속 정상 동작합니다.

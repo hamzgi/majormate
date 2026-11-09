@@ -156,7 +156,10 @@ export function MajorMateApp({ page }: { page: Page }) {
     <header className="topbar">
       <Link href="/" className="brand" aria-label="MajorMate 홈"><span className="brand-mark">M</span><span>MajorMate</span></Link>
       <nav className="nav" aria-label="주요 메뉴">{navItems.map((item) => <Link key={item.page} href={item.href} className={`nav-link ${page === item.page ? "is-active" : ""}`}>{item.label}</Link>)}</nav>
-      <div className="profile-area"><span className="demo-pill">DEMO</span><Link href="/my" className="profile-link"><Avatar name={currentUser.name} small /><span>{currentUser.name}</span></Link></div>
+      <div className="profile-area">
+        <Link href="/login" className="auth-link">로그인</Link>
+        <Link href="/register" className="auth-link auth-link--primary">회원가입</Link>
+      </div>
     </header>
     <main className="page-wrap">
       {page === "home" && <HomeView posts={posts} studies={studies} onPost={setSelectedPost} onStudy={setSelectedStudy} onNewPost={() => setForm("post")} onNewStudy={() => setForm("study")} />}
