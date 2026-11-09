@@ -3,8 +3,9 @@ import { AuthSetupNotice } from "@/components/auth/AuthSetupNotice";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { isAuthConfigured, safeCallbackUrl } from "@/lib/auth-config";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 
-// Auth.js reads request cookies. This route intentionally blocks until its session check completes.
+// Account routes intentionally wait for a request instead of streaming a static shell.
 export const instant = false;
 
 type LoginPageProps = {
@@ -16,6 +17,10 @@ function firstValue(value: string | string[] | undefined) {
 }
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
+  // Auth.js creates cryptographic values while reading the session.
+  // Render this account route only after a real request arrives.
+  await connection();
+
   const params = await searchParams;
 
   if (!isAuthConfigured()) {
