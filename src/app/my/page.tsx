@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { AuthSetupNotice } from "@/components/auth/AuthSetupNotice";
 import { ProfileDashboard } from "@/components/auth/ProfileDashboard";
 import { isAuthConfigured } from "@/lib/auth-config";
+import { getMyStudySummaries } from "@/lib/studies";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 
@@ -23,5 +24,7 @@ export default async function MyPage() {
     redirect("/login?callbackUrl=/my");
   }
 
-  return <ProfileDashboard user={session.user} />;
+  const studies = await getMyStudySummaries(session.user.id);
+
+  return <ProfileDashboard user={session.user} studies={studies} />;
 }
