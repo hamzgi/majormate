@@ -17,6 +17,7 @@ import {
   Study,
   StudyStatus,
 } from "@/lib/demo-data";
+import type { HomeStats } from "@/lib/home-stats";
 
 type Page = "home" | "community" | "studies" | "my";
 type ToastTone = "success" | "neutral";
@@ -65,7 +66,7 @@ function Toast({ message, tone }: { message: string; tone: ToastTone }) {
   return <div role="status" className={`toast toast--${tone}`}><Icon name="check" size={17} />{message}</div>;
 }
 
-export function MajorMateApp({ page }: { page: Page }) {
+export function MajorMateApp({ page, homeStats }: { page: Page; homeStats?: HomeStats | null }) {
   const [posts, setPosts] = useState<Post[]>(seedPosts);
   const [studies, setStudies] = useState<Study[]>(seedStudies);
   const [applications, setApplications] = useState<Application[]>(seedApplications);
@@ -162,7 +163,7 @@ export function MajorMateApp({ page }: { page: Page }) {
       </div>
     </header>
     <main className="page-wrap">
-      {page === "home" && <HomeView posts={posts} studies={studies} onPost={setSelectedPost} onStudy={setSelectedStudy} onNewPost={() => setForm("post")} onNewStudy={() => setForm("study")} />}
+       {page === "home" && <HomeView homeStats={homeStats ?? null} posts={posts} studies={studies} onPost={setSelectedPost} onStudy={setSelectedStudy} onNewPost={() => setForm("post")} onNewStudy={() => setForm("study")} />}
       {page === "community" && <CommunityView posts={posts} onPost={setSelectedPost} onNewPost={() => setForm("post")} />}
       {page === "studies" && <StudiesView studies={studies} onStudy={setSelectedStudy} onNewStudy={() => setForm("study")} />}
       {page === "my" && <MyView posts={posts} studies={studies} applications={applications} applicants={applicants} onDecide={decideApplicant} onNewStudy={() => setForm("study")} />}
@@ -181,13 +182,15 @@ export function MajorMateApp({ page }: { page: Page }) {
   </div>;
 }
 
-function HomeView({ posts, studies, onPost, onStudy, onNewPost, onNewStudy }: { posts: Post[]; studies: Study[]; onPost: (post: Post) => void; onStudy: (study: Study) => void; onNewPost: () => void; onNewStudy: () => void }) {
+function HomeView({ homeStats, posts, studies, onPost, onStudy, onNewPost, onNewStudy }: { homeStats: HomeStats | null; posts: Post[]; studies: Study[]; onPost: (post: Post) => void; onStudy: (study: Study) => void; onNewPost: () => void; onNewStudy: () => void }) {
+  const memberCount = homeStats ? homeStats.memberCount.toLocaleString("ko-KR") : "…";
+  const studyCount = homeStats ? "0" : "…";
   return <>
     <section className="hero">
       <div className="hero-copy"><div className="eyebrow"><span className="pulse-dot" />COMPUTING MAJOR COMMUNITY</div><h1>혼자 풀던 전공 고민,<br /><em>같이</em> 해답을 찾다.</h1><p>강의 정보부터 시험 준비, 스터디 매칭까지.<br />컴퓨터공학과 학생들을 위한 한 곳의 학업 커뮤니티입니다.</p><div className="hero-actions"><Link href="/studies" className="button button--primary">스터디 둘러보기 <Icon name="arrow" size={17} /></Link><Link href="/community" className="button button--ghost">커뮤니티 가기</Link></div></div>
-      <div className="hero-art" aria-label="활성화된 학업 커뮤니티 현황"><div className="orbit orbit--one" /><div className="orbit orbit--two" /><div className="art-core"><span>이번 주</span><strong>17</strong><small>함께하는<br />스터디</small></div><div className="floating-card floating-card--top"><span className="mini-icon mini-icon--mint"><Icon name="message" size={17} /></span><div><b>새 질문 24개</b><small>답변을 기다리고 있어요</small></div></div><div className="floating-card floating-card--bottom"><span className="mini-icon mini-icon--orange"><Icon name="users" size={17} /></span><div><b>매칭률 86%</b><small>이번 주 스터디 기준</small></div></div><span className="hero-star hero-star--one">✦</span><span className="hero-star hero-star--two">✦</span></div>
+      <div className="hero-art" aria-label="실제 MajorMate 서비스 현황"><div className="orbit orbit--one" /><div className="orbit orbit--two" /><div className="art-core"><span>현재</span><strong>{studyCount}</strong><small>모집 중인<br />스터디</small></div><div className="floating-card floating-card--top"><span className="mini-icon mini-icon--mint"><Icon name="message" size={17} /></span><div><b>새 질문 0개</b><small>커뮤니티 기능 준비 중</small></div></div><div className="floating-card floating-card--bottom"><span className="mini-icon mini-icon--orange"><Icon name="users" size={17} /></span><div><b>매칭 준비 중</b><small>스터디 기능 구현 예정</small></div></div><span className="hero-star hero-star--one">✦</span><span className="hero-star hero-star--two">✦</span></div>
     </section>
-    <section className="stat-grid" aria-label="MajorMate 현황"><StatCard value="1,284" label="전공 커뮤니티 멤버" icon="users" tone="violet" /><StatCard value="17" label="지금 모집 중인 스터디" icon="book" tone="mint" /><StatCard value="86%" label="조건 기반 매칭 성공률" icon="sparkle" tone="orange" /></section>
+    <section className="stat-grid" aria-label="MajorMate 실제 현황"><StatCard value={memberCount} label="가입한 커뮤니티 멤버" icon="users" tone="violet" /><StatCard value={studyCount} label="현재 모집 중인 스터디" icon="book" tone="mint" /><StatCard value="준비 중" label="조건 기반 스터디 매칭" icon="sparkle" tone="orange" /></section>
     <section className="section-block"><div className="section-heading"><div><span className="section-kicker">START HERE</span><h2>지금 필요한 학업 활동을<br />바로 시작해 보세요.</h2></div><span className="section-note">클릭해서 데모 흐름을 체험해 보세요</span></div><div className="feature-grid"><article className="feature-card feature-card--community"><div className="feature-visual"><div className="visual-message">자료구조 복습<br /><span>같이 하실 분?</span></div><div className="visual-typing">답변을 남겨 보세요 <span>↗</span></div></div><div className="feature-content"><span className="feature-number">01</span><h3>전공 커뮤니티</h3><p>강의·과제 정보와 전공 고민을 안전하게 나누세요.</p><button className="text-button" onClick={onNewPost}>게시글 작성 <Icon name="arrow" size={16} /></button></div></article><article className="feature-card feature-card--study"><div className="feature-visual"><div className="schedule-chip"><Icon name="calendar" size={15} /> 월 · 목</div><div className="study-stack"><b>알고리즘 Sprint</b><span><i /> 3 / 5 명 참여 중</span></div><span className="meeting-dot" /></div><div className="feature-content"><span className="feature-number">02</span><h3>스터디 매칭</h3><p>과목, 요일, 방식이 맞는 팀원을 찾아보세요.</p><button className="text-button" onClick={onNewStudy}>스터디 만들기 <Icon name="arrow" size={16} /></button></div></article></div></section>
     <section className="section-block split-section"><div className="feed-panel"><SectionHead kicker="COMMUNITY FEED" title="뜨거운 전공 이야기" href="/community" /> <div className="post-list">{posts.slice(0, 3).map((post) => <PostRow key={post.id} post={post} onClick={() => onPost(post)} />)}</div></div><div className="study-panel"><SectionHead kicker="STUDY PICK" title="이 스터디 어때요?" href="/studies" /> <div className="home-study-list">{studies.filter((study) => study.status === "모집 중").slice(0, 2).map((study) => <CompactStudy key={study.id} study={study} onClick={() => onStudy(study)} />)}</div></div></section>
   </>;
